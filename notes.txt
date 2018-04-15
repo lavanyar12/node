@@ -1,0 +1,12 @@
+Node
+Express
+MongoDB - deployment to MLAB (free)
+ - use both local and remote version of MongoDB
+ -noSQL database
+ -no tables, schema less
+ -uses collections
+ -hook up to you application
+ -Mongoose - a module to nodeJS with ORM (similar to hibernate but for Node)
+ -MLAB hosting cloud Mongo database (lavanyar12)
+ -Heroku hosting nodeJs app (lavanyar12)
+ -github (lavanyar12)
