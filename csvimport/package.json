@@ -1,0 +1,19 @@
+{
+  "name": "csvimport",
+  "version": "1.0.0",
+  "description": "Import csv files into mongodb",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "express-fileupload": "^0.4.0",
+    "fast-csv": "^2.4.1",
+    "json2csv": "^4.1.2",
+    "mongodb": "^3.0.7",
+    "mongoose": "^5.0.17"
+  }
+}
