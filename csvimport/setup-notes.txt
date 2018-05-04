@@ -1,0 +1,17 @@
+mkdir csvimport
+cd csvimport
+npm init
+
+npm install express --save
+npm install express-fileupload --save
+
+npm install mongoose --save
+
+npm install json2csv --save
+
+npm install fast-csv --save
+
+
+https://www.npmjs.com/package/json2csv
+
+json2csv -i /et/software/mongodb/authorsExport.json -f -l fieldList.txt -o out.csv

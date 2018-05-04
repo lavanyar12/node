@@ -1,6 +1,9 @@
 Node
 Express
 
+
+
+
 MongoDB - deployment to MLAB (free)
  - use both local and remote version of MongoDB
  -noSQL database
@@ -45,3 +48,8 @@ $mongoexport --db csvimport --collection authors --out authorsExport.json
 
 IMPORT
 $mongoimport --db csvimport --collection authors --file authorsExport.json
+
+>db.authors.count()
+
+>db.lessons.find({ "notebook.title" : "Title 15"})
+>db.lessons.find({ semester: 2, subject: "MB" })

@@ -1,0 +1,6 @@
+name.firstName
+name.lastName
+biography
+twitter
+facebook
+linkedin

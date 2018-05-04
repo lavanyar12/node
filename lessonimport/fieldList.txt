@@ -1,0 +1,11 @@
+subject	
+semester	
+notebook.id	
+notebook.title	
+notebook.description	
+notebook.video.title	
+notebook.video.link	
+notebook.career.title	
+notebook.career.link	
+notebook.detailsLink	
+notebook.mathSkill
