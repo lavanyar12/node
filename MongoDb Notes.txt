@@ -1,8 +1,7 @@
 Node
 Express
 
-
-
+premaseem.wordpress.com
 
 MongoDB - deployment to MLAB (free)
  - use both local and remote version of MongoDB
@@ -39,7 +38,7 @@ ideas
 
 > db.ideas.find()
 { "_id" : ObjectId("5ae4d89b1710a2089baadf51"), "title" : "1212", "details" : "121212", "date" : ISODate("2018-04-28T20:24:59.067Z"), "__v" : 0 }
-> db.ideas.drop() 
+> db.ideas.drop()
 
 
 start mongodb
@@ -50,6 +49,3 @@ IMPORT
 $mongoimport --db csvimport --collection authors --file authorsExport.json
 
 >db.authors.count()
-
->db.lessons.find({ "notebook.title" : "Title 15"})
->db.lessons.find({ semester: 2, subject: "MB" })

@@ -40,7 +40,8 @@ var lessonSchema = mongoose.Schema({
             link: String
         },
         detailsLink: String,
-        mathSkill: String
+        mathSkill: String,
+        image: String
     }
  });
  
