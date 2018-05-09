@@ -6,7 +6,4 @@ notebook.description
 notebook.video.title	
 notebook.video.link	
 notebook.career.title	
-notebook.career.link	
-notebook.detailsLink	
-notebook.mathSkill
-notebook.image
+notebook.career.link

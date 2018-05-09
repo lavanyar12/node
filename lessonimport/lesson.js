@@ -22,8 +22,19 @@ var lessonSchema = mongoose.Schema({
             required: true
         },
         description: {
-            type: String,
-            required: true
+            type: String
+        },
+        video: {
+            title: {
+                type: String
+            },
+            link: String
+        },
+        career: {
+            title: {
+                type: String
+            },
+            link: String
         },
         video: {
             title: {
@@ -32,19 +43,11 @@ var lessonSchema = mongoose.Schema({
             },
             link: String
         },
-        career: {
-            title: {
-                type: String,
-                required: true
-            },
-            link: String
-        },
-        detailsLink: String,
-        mathSkill: String,
+        documentLink: String,
         image: String
     }
  });
- 
+
 var Lesson = mongoose.model('Lesson', lessonSchema);
- 
+
 module.exports = Lesson;
