@@ -1,0 +1,4 @@
+code	type	name	description	folderLink
+MB	COURSE	Marine Biology	Marine Bio course	c:/Marine Biology
+GEO	COURSE	Geology	Geology Course	c:/Geology
+MBCLUB	CLUB	Marine Biology Club
