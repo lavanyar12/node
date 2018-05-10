@@ -36,16 +36,18 @@ app.engine('handlebars', exphbs({
 }));
 app.set('view engine', 'handlebars');
 
-//allows access to whatever is submitted in the form body
+// allows access to whatever is submitted in the form body
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }))
 
 // body parser middleware parse application/json
 app.use(bodyParser.json())
 
-// method override middleware - overriding PUT for edit idea
+// method override middleware - overriding PUT and DELETE methods
 app.use(methodOverride('_method'))
 
+//-------------------------LESSONS ------------------------//
+// GET All lessons route
 app.get('/lessons', (req, res) => {
   Lesson.find({})
     .then(lessons => {
@@ -55,23 +57,26 @@ app.get('/lessons', (req, res) => {
     })
 })
 
+// GET Lessons by subject and semester #
 app.get('/lessons/:subject/:semester', (req, res) => {
   Lesson.find({
     subject: req.params.subject,
     semester: req.params.semester
   })
-    .then(lessons => {
+  .sort({'notebook.id': 'asc'})
+     .then(lessons => {
       res.render('lessons/index', {
         lessons: lessons
       })
     })
 })
 
-// subjects GET route
+//-------------------SUBJECT ROUTES ------------------------//
+// GET All Subjects route
 app.get('/subjects', (req, res) => {
-  //res.render('about')
 
   Subject.find({})
+    .sort({name: 'asc'})
     .then(subjects => {
       res.render('subjects/index', {
         subjects: subjects
@@ -79,12 +84,12 @@ app.get('/subjects', (req, res) => {
     })
 })
 
-// subjects ADD form
+// --------- ADD Subject form
 app.get('/subjects/add', (req, res) => {
   res.render('subjects/add')
 })
 
-// subject EDIT form
+// --------- GET Subject by id for EDIT form
 app.get('/subjects/edit/:id', (req, res) => {
   Subject.findOne({
     _id: req.params.id
@@ -96,23 +101,24 @@ app.get('/subjects/edit/:id', (req, res) => {
     })
 })
 
-//About route
-app.get('/about', (req, res) => {
-  res.render('about')
+// --------- DELETE Subject
+app.delete('/subjects/:id', (req,res) => {
+  //res.send('DELETE') - below remove() will also work
+  Subject.deleteOne({
+    _id: req.params.id
+  })
+    .then(() => {
+      res.redirect('/subjects')
+    })
 })
 
-app.get('/upload', function (req, res) {
-  res.sendFile(__dirname + '/upload.html')
-});
-
-//edit form process
+//---------- Process EDIT Subject form (PUT)
 app.put('/subjects/:id', (req,res) => {
   Subject.findOne({
     _id: req.params.id
   })
     .then(subject => {
 
-      console.log(req.body)
       //new values
       subject.code = req.body.code,
       subject.type = req.body.type,
@@ -129,39 +135,40 @@ app.put('/subjects/:id', (req,res) => {
     
 })
 
-// Delete subject
-app.delete('/subjects/:id', (req,res) => {
-  //res.send('DELETE') - below remove() will also work
-  Subject.deleteOne({
-    _id: req.params.id
-  })
-    .then(() => {
-      res.redirect('/subjects')
-    })
-})
-
-//Process form
+//---------- Process ADD form (POST)
 app.post('/subjects', (req, res) => {
-  console.log(req.body)
   let errors = []
 
   if (!req.body.code) {
     errors.push({ text: 'Please add a code' })
   }
+  if (!req.body.type) {
+    errors.push({ text: 'Please add type' })
+  }
   if (!req.body.name) {
     errors.push({ text: 'Please add name' })
   }
+
+  console.log(errors)
 
   if (errors.length > 0) {
     res.render('subjects/add', {
       errors: errors,
       code: req.body.code,
-      name: req.body.name
+      type: req.body.type,
+      name: req.body.name,
+      description: req.body.description,
+      folderLink: req.body.folderLink,
+      image: req.body.image
     })
   } else {
     const newUser = {
       code: req.body.code,
-      name: req.body.name
+      type: req.body.type,
+      name: req.body.name,
+      description: req.body.description,
+      folderLink: req.body.folderLink,
+      image: req.body.image
       //user: req.user.id for later
     }
     new Subject(newUser)
@@ -172,8 +179,19 @@ app.post('/subjects', (req, res) => {
   }
 })
 
+//-------------- UPLOAD AND GET CSV TEMPLATE ROUTES
 const template = require('./template.js')
 app.get('/template', template.get)
 
 const upload = require('./upload.js')
 app.post('/', upload.post)
+
+//About route
+app.get('/about', (req, res) => {
+  res.render('about')
+})
+
+app.get('/upload', function (req, res) {
+  res.sendFile(__dirname + '/upload.html')
+});
+

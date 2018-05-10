@@ -1,8 +1,6 @@
 {{#each errors}}
-  <div class="alert alert-danger">{{text}}</div>
-{{else}}
-
-{{/each}}
+<div class="alert alert-danger">{{text}}</div>
+{{else}} {{/each}}
 <div class="card card-body">
   <h3>Subjects</h3>
   <form action="/subjects" method="post">
@@ -19,9 +17,17 @@
       <input type="text" class="form-control" name="name" required>
     </div>
     <div class="form-group">
-      <label for="name">Description</label>
-      <textarea class="form-control" name="name" required></textarea>
+      <label for="description">Description</label>
+      <textarea class="form-control" name="description" required></textarea>
+    </div>
+    <div class="form-group">
+      <label for="folderLink">Root Folder Link</label>
+      <input type="text" class="form-control" name="folderLink">
+    </div>
+    <div class="form-group">
+      <label for="image">Image filename with extension</label>
+      <input type="text" class="form-control" name="image">
     </div>
     <button type="submit" class="btn btn-primary">Submit</button>
- </form>
+  </form>
 </div>
