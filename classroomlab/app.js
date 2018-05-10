@@ -47,9 +47,26 @@ app.use(bodyParser.json())
 app.use(methodOverride('_method'))
 
 //-------------------------LESSONS ------------------------//
+
+// GET All lessons route
+app.get('/', (req, res) => {
+  Lesson.find({})
+    .sort({ subject: 'asc' })
+    .sort({ semester: 'asc' })
+    .sort({ 'notebook.id': 'asc' })
+    .then(lessons => {
+      res.render('lessons/index', {
+        lessons: lessons
+      })
+    })
+})
+
 // GET All lessons route
 app.get('/lessons', (req, res) => {
   Lesson.find({})
+    .sort({ subject: 'asc' })
+    .sort({ semester: 'asc' })
+    .sort({ 'notebook.id': 'asc' })
     .then(lessons => {
       res.render('lessons/index', {
         lessons: lessons
@@ -63,12 +80,12 @@ app.get('/lessons/:subject/:semester', (req, res) => {
     subject: req.params.subject,
     semester: req.params.semester
   })
-  .sort({'notebook.id': 'asc'})
-     .then(lessons => {
+  .sort({ 'notebook.id': 'asc' })
+  .then(lessons => {
       res.render('lessons/index', {
         lessons: lessons
-      })
     })
+  })
 })
 
 //-------------------SUBJECT ROUTES ------------------------//
@@ -76,7 +93,7 @@ app.get('/lessons/:subject/:semester', (req, res) => {
 app.get('/subjects', (req, res) => {
 
   Subject.find({})
-    .sort({name: 'asc'})
+    .sort({ name: 'asc' })
     .then(subjects => {
       res.render('subjects/index', {
         subjects: subjects
@@ -102,7 +119,7 @@ app.get('/subjects/edit/:id', (req, res) => {
 })
 
 // --------- DELETE Subject
-app.delete('/subjects/:id', (req,res) => {
+app.delete('/subjects/:id', (req, res) => {
   //res.send('DELETE') - below remove() will also work
   Subject.deleteOne({
     _id: req.params.id
@@ -113,7 +130,7 @@ app.delete('/subjects/:id', (req,res) => {
 })
 
 //---------- Process EDIT Subject form (PUT)
-app.put('/subjects/:id', (req,res) => {
+app.put('/subjects/:id', (req, res) => {
   Subject.findOne({
     _id: req.params.id
   })
@@ -121,18 +138,18 @@ app.put('/subjects/:id', (req,res) => {
 
       //new values
       subject.code = req.body.code,
-      subject.type = req.body.type,
-      subject.name = req.body.name,
-      subject.description = req.body.description,
-      subject.folderLink = req.body.folderLink,
-      subject.image = req.body.image,
-      
-      subject.save()
-        .then(subject => {
-          res.redirect('/subjects')
-        })
+        subject.type = req.body.type,
+        subject.name = req.body.name,
+        subject.description = req.body.description,
+        subject.folderLink = req.body.folderLink,
+        subject.image = req.body.image,
+
+        subject.save()
+          .then(subject => {
+            res.redirect('/subjects')
+          })
     })
-    
+
 })
 
 //---------- Process ADD form (POST)
