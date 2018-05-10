@@ -1,18 +1,17 @@
 {{#each lessons}}
 <div class="card card-body mb-2">
-  <h4>{{subject}}</h4>
-  <p>{{_id}}</p>
-  <p>{{semester}}</p>
-  <p>{{notebook.id}}</p>
- <p>{{notebook.title}}</p>
- <p>{{notebook.description}}</p>
- <p>{{notebook.video.title}}</p>
- <p>{{notebook.video.link}}</p>
- <p>{{notebook.career.title}}</p>
- <p>{{notebook.career.link}}</p>
- <p>{{notebook.movie.title}}</p>
- <p>{{notebook.movie.link}}</p>
- </div>
+  <h4>{{subject}} - Semester {{semester}}</h4>
+  <p># {{notebook.id}} - {{notebook.title}}</p>
+  <p>{{notebook.description}}</p>
+  <p>{{notebook.video.title}}</p>
+  <p>{{notebook.video.link}}</p>
+  <p>{{notebook.career.title}}</p>
+  <p>{{notebook.career.link}}</p>
+  <p>{{notebook.movie.title}}</p>
+  <p>{{notebook.movie.link}}</p>
+  <p>{{notebook.documentLink}}</p>
+  <p>{{notebook.image}}</p>
+</div>
 {{else}}
-  <p>No lessons available to list</p>
+<p>No lessons available to list</p>
 {{/each}}
