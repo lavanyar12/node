@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 //create schema
 var lessonSchema = Schema({
-    //_id: mongoose.Schema.Types.ObjectId,
+    _id: mongoose.Schema.Types.ObjectId,
     subject: {
         type: String,
         required: true
@@ -12,41 +12,33 @@ var lessonSchema = Schema({
         type: Number,
         required: true
     },
-    notebook: {
-        id: {
-            type: Number,
-            required: true
-        },
-        title: {
-            type: String,
-            required: true
-        },
-        description: {
-            type: String
-        },
-        video: {
-            title: {
-                type: String
-            },
-            link: String
-        },
-        career: {
-            title: {
-                type: String
-            },
-            link: String
-        },
-        movie: {
-            title: {
-                type: String,
-                required: true
-            },
-            link: String
-        },
-        documentLink: String,
-        image: String
-    }
- })
+    lessonId: {
+        type: Number,
+        required: true
+    },
+    title: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String
+    },
+    videoTitle: {
+        type: String
+    },
+    videoLink: String,
+    careerTitle: {
+        type: String
+    },
+    careerLink: String,
+    movieTitle: {
+        type: String,
+        required: false
+    },
+    movieLink: String,
+    documentLink: String,
+    image: String
+})
 
 var Lesson = mongoose.model('Lesson', lessonSchema);
 

@@ -1,17 +1,23 @@
 {{#each lessons}}
 <div class="card card-body mb-2">
-  <h4>{{subject}} - Semester {{semester}}</h4>
-  <p># {{notebook.id}} - {{notebook.title}}</p>
-  <p>{{notebook.description}}</p>
-  <p>{{notebook.video.title}}</p>
-  <p>{{notebook.video.link}}</p>
-  <p>{{notebook.career.title}}</p>
-  <p>{{notebook.career.link}}</p>
-  <p>{{notebook.movie.title}}</p>
-  <p>{{notebook.movie.link}}</p>
-  <p>{{notebook.documentLink}}</p>
-  <p>{{notebook.image}}</p>
+  <h4>{{id}} - {{subject}} - Semester {{semester}}</h4>
+  <p># {{lessonId}} - {{title}}</p>
+  <p>{{description}}</p>
+  <p>{{videoTitle}}</p>
+  <p>{{videoLink}}</p>
+  <p>{{careerTitle}}</p>
+  <p>{{careerLink}}</p>
+  <p>{{movieTitle}}</p>
+  <p>{{movieLink}}</p>
+  <p>{{documentLink}}</p>
+  <p>{{image}}</p>
 </div>
+<a class="btn btn-info btn-block mb-2" href="/lessons/edit/{{id}}">Edit</a>
+<form method="post" action="/lessons/{{id}}?_method=DELETE" method="post">
+  <input type="hidden" name=_method value="DELETE">
+  <input type="submit" class="btn btn-danger btn-block" value="Delete">
+</form>
+
 {{else}}
 <p>No lessons available to list</p>
 {{/each}}

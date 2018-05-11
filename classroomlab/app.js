@@ -38,7 +38,7 @@ app.set('view engine', 'handlebars');
 
 // allows access to whatever is submitted in the form body
 // parse application/x-www-form-urlencoded
-app.use(bodyParser.urlencoded({ extended: false }))
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // body parser middleware parse application/json
 app.use(bodyParser.json())
@@ -51,9 +51,9 @@ app.use(methodOverride('_method'))
 // GET All lessons route
 app.get('/', (req, res) => {
   Lesson.find({})
-    .sort({ subject: 'asc' })
-    .sort({ semester: 'asc' })
-    .sort({ 'notebook.id': 'asc' })
+    // .sort({ subject: 'asc' })
+    // .sort({ semester: 'asc' })
+    // .sort({ lessonId: 'asc' })
     .then(lessons => {
       res.render('lessons/index', {
         lessons: lessons
@@ -64,9 +64,9 @@ app.get('/', (req, res) => {
 // GET All lessons route
 app.get('/lessons', (req, res) => {
   Lesson.find({})
-    .sort({ subject: 'asc' })
-    .sort({ semester: 'asc' })
-    .sort({ 'notebook.id': 'asc' })
+    // .sort({ subject: 'asc' })
+    // .sort({ semester: 'asc' })
+    // .sort({ 'id': 'asc' })
     .then(lessons => {
       res.render('lessons/index', {
         lessons: lessons
@@ -74,13 +74,75 @@ app.get('/lessons', (req, res) => {
     })
 })
 
+// --------- ADD Lessons form
+app.get('/lessons/add', (req, res) => {
+  res.render('lessons/add')
+})
+
+// --------- GET Lesson by id for EDIT form
+app.get('/lessons/edit/:id', (req, res) => {
+  console.log('in get')
+  Lesson.findOne({
+    _id: req.params.id
+  })
+    .then(lesson => {
+       res.render('lessons/edit', {
+        lesson: lesson
+      })
+    })
+})
+
+// --------- DELETE Lesson
+app.delete('/lessons/:id', (req, res) => {
+  //res.send('DELETE') - below remove() will also work
+  Subject.deleteOne({
+    _id: req.params.id
+  })
+    .then(() => {
+      res.redirect('/lessons')
+    })
+})
+
+//---------- Process EDIT Lessons form (PUT)
+app.put('/lessons/:id', (req, res) => {
+  Lesson.findOne({
+    _id: req.params.id
+  })
+    .then(lesson => {
+
+      //new values
+      lesson.subject = req.body.subject,
+      lesson.semester = req.body.semester,
+      lesson.lessonId = req.body.lessonId,
+      lesson.title = req.body.title,
+      lesson.description = req.body.description,
+      lesson.videoTitle = req.body.videoTitle,
+      lesson.videoLink = req.body.videoLink,
+      lesson.careerTitle = req.body.careerTitle,
+      lesson.careerLink = req.body.careerLink,
+      lesson.movieTitle = req.body.movieTitle,
+      lesson.movieLink = req.body.movieLink,
+      lesson.documentLink = req.body.documentLink,
+      lesson.image = req.body.image
+     
+      console.log(lesson)
+      
+      lesson.save()
+          .then(lesson => {
+            res.redirect('/lessons')
+          })
+    })
+
+})
+
 // GET Lessons by subject and semester #
 app.get('/lessons/:subject/:semester', (req, res) => {
+  console.log('in get lessons')
   Lesson.find({
     subject: req.params.subject,
     semester: req.params.semester
   })
-  .sort({ 'notebook.id': 'asc' })
+  // .sort({ 'lessonId': 'asc' })
   .then(lessons => {
       res.render('lessons/index', {
         lessons: lessons
@@ -88,6 +150,57 @@ app.get('/lessons/:subject/:semester', (req, res) => {
   })
 })
 
+//---------- Process ADD form (POST)
+app.post('/lessons', (req, res) => {
+  let errors = []
+  if (errors.length > 0) {
+    res.render('lessons/add', {
+      errors: errors,
+      subject: req.body.subject,
+      semester: req.body.semester,
+      lessonId: req.body.lessonId,
+      title: req.body.title,
+      description: req.body.description,
+      videoTitle: req.body.videoTitle,
+      videoLink: req.body.videoLink,
+      careerTitle: req.body.careerTitle,
+      careerLink: req.body.careerLink,
+      movieTitle: req.body.movieTitle,
+      movieLink: req.body.movieLink,
+      documentLink: req.body.documentLink,
+      image: req.body.image
+    })
+  } else {
+
+    console.log (req.body)
+    const newUser = {
+      subject: req.body.subject,
+      semester: req.body.semester,
+      notebook: req.body.notebook,
+      lessonId: req.body.lessonId,
+      title: req.body.title,
+      description: req.body.description,
+      videoTitle: req.body.videoTitle,
+      videoLink: req.body.videoLink,
+      careerTitle: req.body.careerTitle,
+      careerLink: req.body.careerLink,
+      movieTitle: req.body.movieTitle,
+      movieLink: req.body.movieLink,
+      documentLink: req.body.documentLink,
+      image: req.body.image
+   //user: req.user.id for later
+    }
+
+    new Lesson(newUser)
+      .save()
+      .then(lesson => {
+        res.redirect('/lessons')
+      })
+  }
+})
+// END
+
+// BEGIN
 //-------------------SUBJECT ROUTES ------------------------//
 // GET All Subjects route
 app.get('/subjects', (req, res) => {
@@ -165,8 +278,6 @@ app.post('/subjects', (req, res) => {
   if (!req.body.name) {
     errors.push({ text: 'Please add name' })
   }
-
-  console.log(errors)
 
   if (errors.length > 0) {
     res.render('subjects/add', {
