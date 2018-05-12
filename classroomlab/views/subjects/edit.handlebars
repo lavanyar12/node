@@ -2,7 +2,7 @@
 <div class="alert alert-danger">{{text}}</div>
 {{else}} {{/each}}
 <div class="card card-body">
-  <h3>Edit Subject</h3>
+  <h3 class="text-center bg-warning">Edit Subject</h3>
   <form action="/subjects/{{subject.id}}?_method=PUT" method="post">
     <input type="hidden" name=_method value="PUT">
     <div class="form-group">

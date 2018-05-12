@@ -55,8 +55,10 @@ app.get('/', (req, res) => {
     // .sort({ semester: 'asc' })
     // .sort({ lessonId: 'asc' })
     .then(lessons => {
+      const count = lessons.length
       res.render('lessons/index', {
-        lessons: lessons
+        lessons: lessons,
+        count: count
       })
     })
 })
@@ -64,12 +66,14 @@ app.get('/', (req, res) => {
 // GET All lessons route
 app.get('/lessons', (req, res) => {
   Lesson.find({})
-    // .sort({ subject: 'asc' })
-    // .sort({ semester: 'asc' })
-    // .sort({ 'id': 'asc' })
+    .sort({ subject: 'asc' })
+    .sort({ semester: 'asc' })
+    .sort({ lessonId: 'asc' })
     .then(lessons => {
+      const count = lessons.length
       res.render('lessons/index', {
-        lessons: lessons
+        lessons: lessons,
+        count: count
       })
     })
 })
@@ -81,14 +85,13 @@ app.get('/lessons/add', (req, res) => {
 
 // --------- GET Lesson by id for EDIT form
 app.get('/lessons/edit/:id', (req, res) => {
-  console.log('in get')
   Lesson.findOne({
     _id: req.params.id
   })
     .then(lesson => {
-       res.render('lessons/edit', {
+      res.render('lessons/edit', {
         lesson: lesson
-      })
+       })
     })
 })
 
@@ -112,42 +115,44 @@ app.put('/lessons/:id', (req, res) => {
 
       //new values
       lesson.subject = req.body.subject,
-      lesson.semester = req.body.semester,
-      lesson.lessonId = req.body.lessonId,
-      lesson.title = req.body.title,
-      lesson.description = req.body.description,
-      lesson.videoTitle = req.body.videoTitle,
-      lesson.videoLink = req.body.videoLink,
-      lesson.careerTitle = req.body.careerTitle,
-      lesson.careerLink = req.body.careerLink,
-      lesson.movieTitle = req.body.movieTitle,
-      lesson.movieLink = req.body.movieLink,
-      lesson.documentLink = req.body.documentLink,
-      lesson.image = req.body.image
-     
-      console.log(lesson)
-      
+        lesson.semester = req.body.semester,
+        lesson.lessonId = req.body.lessonId,
+        lesson.title = req.body.title,
+        lesson.description = req.body.description,
+        lesson.videoTitle = req.body.videoTitle,
+        lesson.videoLink = req.body.videoLink,
+        lesson.careerTitle = req.body.careerTitle,
+        lesson.careerLink = req.body.careerLink,
+        lesson.movieTitle = req.body.movieTitle,
+        lesson.movieLink = req.body.movieLink,
+        lesson.documentLink = req.body.documentLink,
+        lesson.image = req.body.image
+
       lesson.save()
-          .then(lesson => {
-            res.redirect('/lessons')
-          })
+        .then(lesson => {
+          res.redirect('/lessons')
+        })
     })
 
 })
 
 // GET Lessons by subject and semester #
 app.get('/lessons/:subject/:semester', (req, res) => {
-  console.log('in get lessons')
   Lesson.find({
     subject: req.params.subject,
     semester: req.params.semester
   })
-  // .sort({ 'lessonId': 'asc' })
-  .then(lessons => {
+    .sort({ 'lessonId': 'asc' })
+    .then(lessons => {
+
+      const count = lessons.length
       res.render('lessons/index', {
-        lessons: lessons
+        lessons: lessons,
+        count: count,
+        subject: req.params.subject,
+        semester: req.params.semester
+      })
     })
-  })
 })
 
 //---------- Process ADD form (POST)
@@ -172,7 +177,6 @@ app.post('/lessons', (req, res) => {
     })
   } else {
 
-    console.log (req.body)
     const newUser = {
       subject: req.body.subject,
       semester: req.body.semester,
@@ -188,7 +192,7 @@ app.post('/lessons', (req, res) => {
       movieLink: req.body.movieLink,
       documentLink: req.body.documentLink,
       image: req.body.image
-   //user: req.user.id for later
+      //user: req.user.id for later
     }
 
     new Lesson(newUser)
