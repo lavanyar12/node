@@ -32,7 +32,7 @@ var Subject = require('./models/subject');
 
 // Handlebars middleware - setting the engine
 app.engine('handlebars', exphbs({
-  defaultLayout: 'main'
+  defaultLayout: 'default'
 }));
 app.set('view engine', 'handlebars');
 
@@ -47,21 +47,6 @@ app.use(bodyParser.json())
 app.use(methodOverride('_method'))
 
 //-------------------------LESSONS ------------------------//
-
-// GET All lessons route
-app.get('/', (req, res) => {
-  Lesson.find({})
-    // .sort({ subject: 'asc' })
-    // .sort({ semester: 'asc' })
-    // .sort({ lessonId: 'asc' })
-    .then(lessons => {
-      const count = lessons.length
-      res.render('lessons/index', {
-        lessons: lessons,
-        count: count
-      })
-    })
-})
 
 // GET All lessons route
 app.get('/lessons', (req, res) => {
@@ -91,7 +76,7 @@ app.get('/lessons/edit/:id', (req, res) => {
     .then(lesson => {
       res.render('lessons/edit', {
         lesson: lesson
-       })
+      })
     })
 })
 
@@ -135,6 +120,27 @@ app.put('/lessons/:id', (req, res) => {
     })
 
 })
+
+// GET Lessons by subject and semester # - VIEW only
+app.get('/lessons/view/:subject/:semester', (req, res) => {
+  Lesson.find({
+    subject: req.params.subject,
+    semester: req.params.semester
+  })
+    .sort({ 'lessonId': 'asc' })
+    .then(lessons => {
+
+      const count = lessons.length
+      res.render('lessons/view', {
+        lessons: lessons,
+        count: count,
+        subject: req.params.subject,
+        semester: req.params.semester,
+        layout: 'main'
+      })
+    })
+})
+
 
 // GET Lessons by subject and semester #
 app.get('/lessons/:subject/:semester', (req, res) => {
@@ -320,10 +326,28 @@ app.post('/', upload.post)
 
 //About route
 app.get('/about', (req, res) => {
-  res.render('about')
+  res.render('about', {
+    layout: 'main'
+  })
 })
 
 app.get('/upload', function (req, res) {
   res.sendFile(__dirname + '/upload.html')
 });
+
+// HOME page
+app.get('/home', (req, res) => {
+  res.render('home', {
+    layout: 'main'
+  })
+})
+
+// HOME page
+app.get('/', (req, res) => {
+  res.render('home', {
+    layout: 'main'
+  })
+})
+
+
 
