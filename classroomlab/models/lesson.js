@@ -3,7 +3,7 @@ const Schema = mongoose.Schema
 
 //create schema
 var lessonSchema = Schema({
-    _id: mongoose.Schema.Types.ObjectId,
+    //_id: mongoose.Schema.Types.ObjectId,
     subject: {
         type: String,
         required: true
