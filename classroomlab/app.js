@@ -6,9 +6,9 @@ const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 var methodOverride = require('method-override')
-const path = require('path');
+//const path = require('path');
 
-const publicPath = path.join(__dirname, '../views');
+//const publicPath = path.join(__dirname, '../views');
 const app = express()
 const server = require('http').Server(app)
 

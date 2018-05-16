@@ -1,53 +1,38 @@
-<div class="mt-5 alert bg-info text-light text-center">
-  {{count}} lessons found for {{subject}} - Semester {{semester}}
-</div>
-{{#each lessons}}
-<div class="card card-body">
-  <h4 class="card-title">Notebook # {{lessonId}} : {{title}}</h4>
-  <ul class="list-group">
-    <li class="list-group-item">
-      <h6>Description:</h6>
-      <p>{{description}}</p>
-    </li>
-    <li class="list-group-item">
-      <h6>Video Title:</h6>
-      <p>{{videoTitle}}</p>
-    </li>
-    <li class="list-group-item">
-      <h6>Video Link:</h6>
-      <p>{{videoLink}}</p>
-    </li>
-    <li class="list-group-item mb-1">
-      <h6>Career Title:</h6>
-      <p>{{careerTitle}}</p>
-    </li>
-    <li class="list-group-item">
-      <h6>Career Link:</h6>
-      <p></p>{{careerLink}}</p>
-    </li>
-    <li class="list-group-item">
-      <h6>Movie Title:</h6>
-      <p>{{movieTitle}}</p>
-    </li>
-    <li class="list-group-item">
-      <h6>Movie Link:</h6>
-      <p>{{movieLink}}</p>
-    </li>
-    <li class="list-group-item">
-      <h6>Document Link:</h6>
-      <p>{{documentLink}}</p>
-    </li>
-    <li class="list-group-item">
-      <h6>Image Name:</h6>
-      <p>{{image}}</p>
-    </li>
-  </ul>
-</div>
+<div class="dark">
+  <div class="home-inner">
+    <div class="container">
+      <div class="col-lg-12 mt-5">
 
-{{else}}
-<!--
-<div class="mt-3 alert bg-info text-light text-center">
-  There are no lessons available for {{subject}} - Semester {{semester}}
+        {{#each lessons}}
+
+        <div class="card bg-info text-center card-form mt-3">
+          <div class="card-body">
+
+            <h3 class="card-title">{{lessonId}}. {{title}}</h3>
+            <p>{{description}}</p>
+            <h3>Video</h3>
+            <p>{{videoTitle}}</p>
+            <p>{{videoLink}}</p>
+            <h3>Career</h3>
+            <p>{{careerTitle}}</p>
+            <p>{{careerLink}}</p>
+            <h3>Movie</h3>
+            <p>{{movieTitle}}</p>
+            <p>{{movieLink}}</p>
+            <p>Notebook</p>
+            <p>{{documentLink}}</p>
+            <p>{{image}}</p>
+
+          </div>
+        </div>
+
+
+        {{else}}
+        <div class="alert bg-info text-light text-center">
+          There are no lessons available for {{subject}} - Semester {{semester}}
+        </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
 </div>
--->
-{{/each}}
