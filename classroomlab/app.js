@@ -5,14 +5,13 @@ const fileUpload = require('express-fileupload')
 const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
-var methodOverride = require('method-override')
-//const path = require('path');
-
-//const publicPath = path.join(__dirname, '../views');
+const methodOverride = require('method-override')
 const app = express()
 const server = require('http').Server(app)
 
 app.use(fileUpload())
+
+//proxy to serve css, img and js folders in views
 app.use('/public', express.static('views'))
 
 const port = 5000
@@ -126,6 +125,17 @@ app.put('/lessons/:id', (req, res) => {
 
 // GET Lessons by subject and semester # - VIEW only
 app.get('/lessons/view/:subject/:semester', (req, res) => {
+
+  var sub = req.params.subject
+
+  if (req.params.subject == 'MB') {
+    sub = 'Marine Biology'
+  } else if (req.params.subject == 'GEO') {
+    sub = 'Geology'
+  } else {
+    sub = req.params.subject
+  }
+
   Lesson.find({
     subject: req.params.subject,
     semester: req.params.semester
@@ -134,10 +144,11 @@ app.get('/lessons/view/:subject/:semester', (req, res) => {
     .then(lessons => {
 
       const count = lessons.length
+     
       res.render('lessons/view', {
         lessons: lessons,
         count: count,
-        subject: req.params.subject,
+        subject: sub,
         semester: req.params.semester,
         layout: 'main'
       })
