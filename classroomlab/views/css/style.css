@@ -1,6 +1,7 @@
 body {
   background: #333;
-  color: #fff; }
+  color: #fff; 
+  padding-top: 60px; }
 
 .navbar {
   border-bottom: #5bb0db 3px solid;
