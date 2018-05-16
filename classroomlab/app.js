@@ -8,6 +8,7 @@ const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
 const app = express()
 const server = require('http').Server(app)
+const validate = require("validate.js")
 
 app.use(fileUpload())
 
@@ -125,54 +126,46 @@ app.put('/lessons/:id', (req, res) => {
 
 // GET Lessons by subject and semester # - VIEW only
 app.get('/lessons/view/:subject/:semester', (req, res) => {
-
-  var sub = req.params.subject
-
-  if (req.params.subject == 'MB') {
-    sub = 'Marine Biology'
-  } else if (req.params.subject == 'GEO') {
-    sub = 'Geology'
-  } else {
-    sub = req.params.subject
-  }
-
-  Lesson.find({
-    subject: req.params.subject,
-    semester: req.params.semester
-  })
-    .sort({ 'lessonId': 'asc' })
-    .then(lessons => {
-
-      const count = lessons.length
-     
-      res.render('lessons/view', {
-        lessons: lessons,
-        count: count,
-        subject: sub,
-        semester: req.params.semester,
-        layout: 'main'
+  Subject.find({}).then((results) => {
+    var subjectObj = getByKey(results, req.params.subject)
+    Lesson.find({
+      subject: req.params.subject,
+      semester: req.params.semester
+      })
+      .sort({ 'lessonId': 'asc' })
+      .then(lessons => {
+        const count = lessons.length
+        res.render('lessons/view', {
+          lessons: lessons,
+          count: count,
+          subject: subjectObj.name,
+          semester: req.params.semester,
+          layout: 'main'
       })
     })
+  })
 })
 
 
-// GET Lessons by subject and semester #
+// GET Lessons by subject and semester # - VIEW / EDIT
 app.get('/lessons/:subject/:semester', (req, res) => {
-  Lesson.find({
-    subject: req.params.subject,
-    semester: req.params.semester
-  })
+  Subject.find({}).then((results) => {
+    var subjectObj = getByKey(results, req.params.subject)
+    Lesson.find({
+      subject: req.params.subject,
+      semester: req.params.semester
+    })
     .sort({ 'lessonId': 'asc' })
     .then(lessons => {
-
       const count = lessons.length
       res.render('lessons/index', {
         lessons: lessons,
         count: count,
-        subject: req.params.subject,
+        subject: subjectObj.name,
         semester: req.params.semester
       })
     })
+  })
 })
 
 //---------- Process ADD form (POST)
@@ -363,5 +356,14 @@ app.get('/', (req, res) => {
   })
 })
 
+function getByKey(results, key) {
+  var object
+  for (var i = 0; i < results.length; i++) {
+    if (results[i].code === key) {
+      object = results[i]
+    }
+  }
+  return object
+}
 
 
