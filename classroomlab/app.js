@@ -251,12 +251,13 @@ app.get('/subjects/edit/:id', (req, res) => {
 // --------- DELETE Subject
 app.delete('/subjects/:id', (req, res) => {
   //res.send('DELETE') - below remove() will also work
-  Subject.deleteOne({
-    _id: req.params.id
-  })
-    .then(() => {
-      res.redirect('/subjects')
-    })
+  // Subject.deleteOne({
+  //   _id: req.params.id
+  // })
+  //   .then(() => {
+  //     res.redirect('/subjects')
+  //   })
+  res.redirect('/subjects')
 })
 
 //---------- Process EDIT Subject form (PUT)
@@ -271,7 +272,8 @@ app.put('/subjects/:id', (req, res) => {
         subject.type = req.body.type,
         subject.name = req.body.name,
         subject.description = req.body.description,
-        subject.folderLink = req.body.folderLink,
+        subject.notebookRootFolderURL = req.body.notebookRootFolderURL,
+        subject.imageRootFolderURL = req.body.imageRootFolderURL,
         subject.image = req.body.image,
 
         subject.save()
@@ -303,7 +305,8 @@ app.post('/subjects', (req, res) => {
       type: req.body.type,
       name: req.body.name,
       description: req.body.description,
-      folderLink: req.body.folderLink,
+      imageRootFolderURL: req.body.imageRootFolderURL,
+      notebookRootFolderURL: req.body.notebookRootFolderURL,
       image: req.body.image
     })
   } else {
@@ -312,7 +315,8 @@ app.post('/subjects', (req, res) => {
       type: req.body.type,
       name: req.body.name,
       description: req.body.description,
-      folderLink: req.body.folderLink,
+      imageRootFolderURL: req.body.imageRootFolderURL,
+      notebookRootFolderURL: req.body.notebookRootFolderURL,
       image: req.body.image
       //user: req.user.id for later
     }
@@ -333,9 +337,14 @@ app.post('/', upload.post)
 
 //About route
 app.get('/about', (req, res) => {
-  res.render('about', {
-    layout: 'main'
-  })
+  Subject.find({})
+    .sort({ name: 'asc' })
+    .then(subjects => {
+      res.render('about', {
+        subjects: subjects,
+        layout: 'main'
+      })
+    })
 })
 
 app.get('/upload', function (req, res) {
@@ -344,13 +353,6 @@ app.get('/upload', function (req, res) {
 
 // HOME page
 app.get('/home', (req, res) => {
-  res.render('home', {
-    layout: 'main'
-  })
-})
-
-// HOME page
-app.get('/', (req, res) => {
   res.render('home', {
     layout: 'main'
   })

@@ -17,7 +17,8 @@ var subjectSchema = Schema({
     required: true
   },
   description: String,
-  folderLink: String,
+  imageRootFolderURL: String,
+  notebookRootFolderURL: String,
   image: String
 })
 

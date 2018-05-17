@@ -10,18 +10,27 @@
 
             <h3 class="card-title">{{lessonId}}. {{title}}</h3>
             <p>{{description}}</p>
-            <h3>Video</h3>
+            <h3>Video Clip</h3>
             <p>{{videoTitle}}</p>
             <p>{{videoLink}}</p>
             <h3>Career</h3>
             <p>{{careerTitle}}</p>
             <p>{{careerLink}}</p>
             <h3>Movie</h3>
-            <p>{{movieTitle}}</p>
-            <p>{{movieLink}}</p>
+            <p>{{movieTitle}} - {{movieLink}}</p>
+            <p></p>
+            <div class="embed-responsive embed-responsive-16by9">
+            <iframe class="embed-responsive-item" src="{{videoLink}}" allowfullscreen></iframe>
+            </div>
             <p>Notebook</p>
             <p>{{documentLink}}</p>
             <p>{{image}}</p>
+            <!--
+            <div class="imgwrapper">
+            <img src="http://www.dropbox.com/sh/wicmo16uxzcoql4/AAB_u_DRNKmQPUkbqJDMTH_ha/GEO/images?dl=0&preview=GEO.jpeg" class="img-responsive">
+            </div>-->
+
+
 
           </div>
         </div>
