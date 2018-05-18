@@ -85,13 +85,13 @@ app.get('/lessons/edit/:id', (req, res) => {
 
 // --------- DELETE Lesson
 app.delete('/lessons/:id', (req, res) => {
-  //res.send('DELETE') - below remove() will also work
-  Subject.deleteOne({
-    _id: req.params.id
-  })
-    .then(() => {
-      res.redirect('/lessons')
-    })
+  // Lesson.deleteOne({
+  //   _id: req.params.id
+  // })
+  //   .then(() => {
+  //    res.redirect('/lessons')
+  //   })
+    //res.redirect('/lessons')
 })
 
 //---------- Process EDIT Lessons form (PUT)
@@ -250,13 +250,13 @@ app.get('/subjects/edit/:id', (req, res) => {
 
 // --------- DELETE Subject
 app.delete('/subjects/:id', (req, res) => {
-  //res.send('DELETE') - below remove() will also work
   // Subject.deleteOne({
   //   _id: req.params.id
   // })
   //   .then(() => {
   //     res.redirect('/subjects')
   //   })
+  //res.redirect('/subjects')
   res.redirect('/subjects')
 })
 

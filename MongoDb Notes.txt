@@ -43,7 +43,7 @@ ideas
 
 start mongodb
 EXPORT run this to export authors collection from csvimport database
-$mongoexport --db csvimport --collection authors --out authorsExport.json
+mongoexport --db csvimport --collection authors --out authorsExport.json
 
 IMPORT - make sure there is an EOF and newline between the row is csv and tsv
 $mongoimport --db csvimport --collection authors --file authorsExport.json
@@ -51,5 +51,9 @@ $mongoimport --db csvimport --collection authors --file authorsExport.json
 $ mongoimport --db csvimport --collection subjects --type csv subjects.csv --headerline
 $ mongoimport --db csvimport --collection lessons --type csv lessons.csv --headerline
 $ mongoimport --db csvimport --collection lessons --type tsv drake.txt --headerline
+
+mongoimport --db csvimport --collection lessons --type tsv lessonsV3.txt --headerline
+
+mongoexport --db csvimport --collection lessons -out lessons.json
 
 >db.authors.count()
