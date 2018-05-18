@@ -85,13 +85,14 @@ app.get('/lessons/edit/:id', (req, res) => {
 
 // --------- DELETE Lesson
 app.delete('/lessons/:id', (req, res) => {
-  // Lesson.deleteOne({
-  //   _id: req.params.id
-  // })
-  //   .then(() => {
-  //    res.redirect('/lessons')
-  //   })
-    //res.redirect('/lessons')
+  Lesson.deleteOne({
+    _id: req.params.id
+  })
+    .then(() => {
+     res.redirect('/lessons')
+    })
+  // console.log(req.params.id)
+  // res.redirect('/lessons')
 })
 
 //---------- Process EDIT Lessons form (PUT)
@@ -250,14 +251,14 @@ app.get('/subjects/edit/:id', (req, res) => {
 
 // --------- DELETE Subject
 app.delete('/subjects/:id', (req, res) => {
-  // Subject.deleteOne({
-  //   _id: req.params.id
-  // })
-  //   .then(() => {
-  //     res.redirect('/subjects')
-  //   })
-  //res.redirect('/subjects')
-  res.redirect('/subjects')
+  Subject.deleteOne({
+    _id: req.params.id
+  })
+    .then(() => {
+      res.redirect('/subjects')
+    })
+  // console.log(req.params.id)
+  // res.redirect('/subjects')
 })
 
 //---------- Process EDIT Subject form (PUT)
