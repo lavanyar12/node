@@ -2,7 +2,7 @@
   Found {{count}} lessons for {{subject}} - Semester {{semester}}
 </div>
 {{#each lessons}}
-<div class="card card-body">
+<div class="card card-body mb-2">
   <h4 class="card-title">Notebook {{lessonId}} - {{title}}</h4>
   <ul class="list-group">
     <li class="list-group-item">
@@ -17,7 +17,7 @@
       <h6>Video Link:</h6>
       <p>{{videoLink}}</p>
     </li>
-    <li class="list-group-item mb-1">
+    <li class="list-group-item">
       <h6>Career Title:</h6>
       <p>{{careerTitle}}</p>
     </li>
@@ -72,7 +72,9 @@
 </div>
 
 {{else}}
+<!--
 <div class="alert bg-info text-light text-center mt-2">
   No lessons available for {{subject}} in Semester {{semester}}
 </div>
+-->
 {{/each}}
