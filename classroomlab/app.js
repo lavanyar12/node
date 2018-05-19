@@ -33,9 +33,19 @@ mongoose.connect('mongodb://localhost/csvimport', {
 var Lesson = require('./models/lesson');
 var Subject = require('./models/subject');
 
+var handlebars = exphbs.create({
+  helpers: {
+    section: function(name, options) { 
+      if (!this._sections) this._sections = {};
+        this._sections[name] = options.fn(this); 
+        return null;
+      }
+  }    
+});
+
 // Handlebars middleware - setting the engine
 app.engine('handlebars', exphbs({
-  defaultLayout: 'default'
+  defaultLayout: 'default',
 }));
 app.set('view engine', 'handlebars');
 
@@ -73,6 +83,7 @@ app.get('/lessons/add', (req, res) => {
 
 // --------- GET Lesson by id for EDIT form
 app.get('/lessons/edit/:id', (req, res) => {
+  
   Lesson.findOne({
     _id: req.params.id
   })
