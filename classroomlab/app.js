@@ -36,7 +36,7 @@ var Subject = require('./models/subject');
 // Handlebars middleware - setting the engine
 app.engine('handlebars', exphbs({
   defaultLayout: 'default',
-  helpers: {
+  helpers: { //not used yet
     section: function(name, options) { 
       if (!this._sections) this._sections = {};
         this._sections[name] = options.fn(this); 
