@@ -33,7 +33,9 @@ mongoose.connect('mongodb://localhost/csvimport', {
 var Lesson = require('./models/lesson');
 var Subject = require('./models/subject');
 
-var handlebars = exphbs.create({
+// Handlebars middleware - setting the engine
+app.engine('handlebars', exphbs({
+  defaultLayout: 'default',
   helpers: {
     section: function(name, options) { 
       if (!this._sections) this._sections = {};
@@ -41,12 +43,8 @@ var handlebars = exphbs.create({
         return null;
       }
   }    
-});
+}))
 
-// Handlebars middleware - setting the engine
-app.engine('handlebars', exphbs({
-  defaultLayout: 'default',
-}));
 app.set('view engine', 'handlebars');
 
 // allows access to whatever is submitted in the form body

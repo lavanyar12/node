@@ -14,17 +14,8 @@
       </select>
       <input id="subjectId" type="text" class="form-control" name="subject" value="{{lesson.subject}}">
 
-      <script>
-        function run() {
-          var sel = document.getElementById("subjectOption").value;
-          alert(sel)
-        }
-      </script>
-
       <p>Custom Script Section</p>
-
       {{#section 'script'}}
-
       <script type="application/javascript">
         $(function () {
           alert("Hello World!");
