@@ -71,6 +71,8 @@ app.use(function(req, res, next){
   next();
 });
 
+var Subject = require('./models/subject');
+
 //About route
 app.get('/about', (req, res) => {
   Subject.find({})

@@ -1,14 +1,10 @@
 const express = require('express')
 const router = express.Router()
-const methodOverride = require('method-override')
 
 module.exports = router
 
 var Lesson = require('../models/lesson');
 var Subject = require('../models/subject');
-
-// method override middleware - overriding PUT and DELETE methods
-router.use(methodOverride('_method'))
 
 //-------------------------LESSONS ------------------------//
 
