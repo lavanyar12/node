@@ -9,6 +9,8 @@ const methodOverride = require('method-override')
 const app = express()
 const server = require('http').Server(app)
 const validate = require("validate.js")
+const flash = require('connect-flash')
+const session = require('express-session')
 
 app.use(fileUpload())
 
@@ -57,6 +59,24 @@ app.use(bodyParser.json())
 // method override middleware - overriding PUT and DELETE methods
 app.use(methodOverride('_method'))
 
+// Express session middleware
+app.use(session({
+  secret: 'secret',
+  resave: true,
+  saveUninitialized: true
+}));
+
+//for flash messaging
+app.use(flash());
+
+// Global variables for messages
+app.use(function(req, res, next){
+  res.locals.success_msg = req.flash('success_msg');
+  res.locals.error_msg = req.flash('error_msg');
+  res.locals.error = req.flash('error');
+  next();
+});
+
 //-------------------------LESSONS ------------------------//
 
 // GET All lessons route
@@ -98,7 +118,8 @@ app.delete('/lessons/:id', (req, res) => {
     _id: req.params.id
   })
     .then(() => {
-     res.redirect('/lessons')
+      req.flash('success_msg', 'Lesson deleted');
+      res.redirect('/lessons')
     })
   // console.log(req.params.id)
   // res.redirect('/lessons')
@@ -128,6 +149,7 @@ app.put('/lessons/:id', (req, res) => {
 
       lesson.save()
         .then(lesson => {
+          req.flash('success_msg', 'Lesson saved');
           res.redirect('/lessons')
         })
     })
@@ -221,6 +243,7 @@ app.post('/lessons', (req, res) => {
     new Lesson(newUser)
       .save()
       .then(lesson => {
+        req.flash('success_msg', 'Lesson added');
         res.redirect('/lessons')
       })
   }
@@ -264,9 +287,11 @@ app.delete('/subjects/:id', (req, res) => {
     _id: req.params.id
   })
     .then(() => {
+      req.flash('success_msg', 'Subject deleted');
       res.redirect('/subjects')
     })
   // console.log(req.params.id)
+  // req.flash('success_msg', 'Subject deleted');
   // res.redirect('/subjects')
 })
 
@@ -288,6 +313,7 @@ app.put('/subjects/:id', (req, res) => {
 
         subject.save()
           .then(subject => {
+            req.flash('success_msg', 'Subject saved');
             res.redirect('/subjects')
           })
     })
@@ -333,6 +359,7 @@ app.post('/subjects', (req, res) => {
     new Subject(newUser)
       .save()
       .then(subject => {
+        req.flash('success_msg', 'Subject added');
         res.redirect('/subjects')
       })
   }
