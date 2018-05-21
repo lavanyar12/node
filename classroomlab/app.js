@@ -6,21 +6,20 @@ const mongoose = require('mongoose')
 const exphbs = require('express-handlebars')
 const bodyParser = require('body-parser')
 const methodOverride = require('method-override')
-const app = express()
-const server = require('http').Server(app)
 const validate = require("validate.js")
 const flash = require('connect-flash')
 const session = require('express-session')
 
-app.use(fileUpload())
+const app = express()
+const server = require('http').Server(app)
+
+//Load routes (in routes folder - subjects/lessons/users/...)
+const lessons = require('./routes/lessons')
+const subjects = require('./routes/subjects')
+const users = require('./routes/users')
 
 //proxy to serve css, img and js folders in views
 app.use('/public', express.static('views'))
-
-const port = 5000
-server.listen(port, () => {
-  console.log(`Server started on port ${port}`)
-})
 
 //Map global promise - get rid of warning
 mongoose.Promise = global.Promise;
@@ -31,9 +30,6 @@ mongoose.connect('mongodb://localhost/csvimport', {
 })
   .then(() => console.log('Connection to MongoDB successful'))
   .catch(err => console.log(err))
-
-var Lesson = require('./models/lesson');
-var Subject = require('./models/subject');
 
 // Handlebars middleware - setting the engine
 app.engine('handlebars', exphbs({
@@ -46,14 +42,12 @@ app.engine('handlebars', exphbs({
       }
   }    
 }))
-
 app.set('view engine', 'handlebars');
 
+// Body parser middleware
 // allows access to whatever is submitted in the form body
 // parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: true }))
-
-// body parser middleware parse application/json
 app.use(bodyParser.json())
 
 // method override middleware - overriding PUT and DELETE methods
@@ -77,301 +71,6 @@ app.use(function(req, res, next){
   next();
 });
 
-//-------------------------LESSONS ------------------------//
-
-// GET All lessons route
-app.get('/lessons', (req, res) => {
-  Lesson.find({})
-    .sort({ subject: 'asc' })
-    .sort({ semester: 'asc' })
-    .sort({ lessonId: 'asc' })
-    .then(lessons => {
-      const count = lessons.length
-      res.render('lessons/index', {
-        lessons: lessons,
-        count: count
-      })
-    })
-})
-
-// --------- ADD Lessons form
-app.get('/lessons/add', (req, res) => {
-  res.render('lessons/add')
-})
-
-// --------- GET Lesson by id for EDIT form
-app.get('/lessons/edit/:id', (req, res) => {
-  
-  Lesson.findOne({
-    _id: req.params.id
-  })
-    .then(lesson => {
-      res.render('lessons/edit', {
-        lesson: lesson
-      })
-    })
-})
-
-// --------- DELETE Lesson
-app.delete('/lessons/:id', (req, res) => {
-  Lesson.deleteOne({
-    _id: req.params.id
-  })
-    .then(() => {
-      req.flash('success_msg', 'Lesson deleted');
-      res.redirect('/lessons')
-    })
-  // console.log(req.params.id)
-  // res.redirect('/lessons')
-})
-
-//---------- Process EDIT Lessons form (PUT)
-app.put('/lessons/:id', (req, res) => {
-  Lesson.findOne({
-    _id: req.params.id
-  })
-    .then(lesson => {
-
-      //new values
-      lesson.subject = req.body.subject,
-        lesson.semester = req.body.semester,
-        lesson.lessonId = req.body.lessonId,
-        lesson.title = req.body.title,
-        lesson.description = req.body.description,
-        lesson.videoTitle = req.body.videoTitle,
-        lesson.videoLink = req.body.videoLink,
-        lesson.careerTitle = req.body.careerTitle,
-        lesson.careerLink = req.body.careerLink,
-        lesson.movieTitle = req.body.movieTitle,
-        lesson.movieLink = req.body.movieLink,
-        lesson.documentLink = req.body.documentLink,
-        lesson.image = req.body.image
-
-      lesson.save()
-        .then(lesson => {
-          req.flash('success_msg', 'Lesson saved');
-          res.redirect('/lessons')
-        })
-    })
-
-})
-
-// GET Lessons by subject and semester # - VIEW only
-app.get('/lessons/view/:subject/:semester', (req, res) => {
-  Subject.find({}).then((results) => {
-    var subjectObj = getByKey(results, req.params.subject)
-    Lesson.find({
-      subject: req.params.subject,
-      semester: req.params.semester
-      })
-      .sort({ 'lessonId': 'asc' })
-      .then(lessons => {
-        const count = lessons.length
-        res.render('lessons/view', {
-          lessons: lessons,
-          count: count,
-          subject: subjectObj.name,
-          semester: req.params.semester,
-          layout: 'main'
-      })
-    })
-  })
-})
-
-
-// GET Lessons by subject and semester # - VIEW / EDIT
-app.get('/lessons/:subject/:semester', (req, res) => {
-  Subject.find({}).then((results) => {
-    var subjectObj = getByKey(results, req.params.subject)
-    Lesson.find({
-      subject: req.params.subject,
-      semester: req.params.semester
-    })
-    .sort({ 'lessonId': 'asc' })
-    .then(lessons => {
-      const count = lessons.length
-      res.render('lessons/index', {
-        lessons: lessons,
-        count: count,
-        subject: subjectObj.name,
-        semester: req.params.semester
-      })
-    })
-  })
-})
-
-//---------- Process ADD form (POST)
-app.post('/lessons', (req, res) => {
-  let errors = []
-  if (errors.length > 0) {
-    res.render('lessons/add', {
-      errors: errors,
-      subject: req.body.subject,
-      semester: req.body.semester,
-      lessonId: req.body.lessonId,
-      title: req.body.title,
-      description: req.body.description,
-      videoTitle: req.body.videoTitle,
-      videoLink: req.body.videoLink,
-      careerTitle: req.body.careerTitle,
-      careerLink: req.body.careerLink,
-      movieTitle: req.body.movieTitle,
-      movieLink: req.body.movieLink,
-      documentLink: req.body.documentLink,
-      image: req.body.image
-    })
-  } else {
-
-    const newUser = {
-      subject: req.body.subject,
-      semester: req.body.semester,
-      notebook: req.body.notebook,
-      lessonId: req.body.lessonId,
-      title: req.body.title,
-      description: req.body.description,
-      videoTitle: req.body.videoTitle,
-      videoLink: req.body.videoLink,
-      careerTitle: req.body.careerTitle,
-      careerLink: req.body.careerLink,
-      movieTitle: req.body.movieTitle,
-      movieLink: req.body.movieLink,
-      documentLink: req.body.documentLink,
-      image: req.body.image
-      //user: req.user.id for later
-    }
-
-    new Lesson(newUser)
-      .save()
-      .then(lesson => {
-        req.flash('success_msg', 'Lesson added');
-        res.redirect('/lessons')
-      })
-  }
-})
-// END
-
-// BEGIN
-//-------------------SUBJECT ROUTES ------------------------//
-// GET All Subjects route
-app.get('/subjects', (req, res) => {
-
-  Subject.find({})
-    .sort({ name: 'asc' })
-    .then(subjects => {
-      res.render('subjects/index', {
-        subjects: subjects
-      })
-    })
-})
-
-// --------- ADD Subject form
-app.get('/subjects/add', (req, res) => {
-  res.render('subjects/add')
-})
-
-// --------- GET Subject by id for EDIT form
-app.get('/subjects/edit/:id', (req, res) => {
-  Subject.findOne({
-    _id: req.params.id
-  })
-    .then(subject => {
-      res.render('subjects/edit', {
-        subject: subject
-      })
-    })
-})
-
-// --------- DELETE Subject
-app.delete('/subjects/:id', (req, res) => {
-  Subject.deleteOne({
-    _id: req.params.id
-  })
-    .then(() => {
-      req.flash('success_msg', 'Subject deleted');
-      res.redirect('/subjects')
-    })
-  // console.log(req.params.id)
-  // req.flash('success_msg', 'Subject deleted');
-  // res.redirect('/subjects')
-})
-
-//---------- Process EDIT Subject form (PUT)
-app.put('/subjects/:id', (req, res) => {
-  Subject.findOne({
-    _id: req.params.id
-  })
-    .then(subject => {
-
-      //new values
-      subject.code = req.body.code,
-        subject.type = req.body.type,
-        subject.name = req.body.name,
-        subject.description = req.body.description,
-        subject.notebookRootFolderURL = req.body.notebookRootFolderURL,
-        subject.imageRootFolderURL = req.body.imageRootFolderURL,
-        subject.image = req.body.image,
-
-        subject.save()
-          .then(subject => {
-            req.flash('success_msg', 'Subject saved');
-            res.redirect('/subjects')
-          })
-    })
-
-})
-
-//---------- Process ADD form (POST)
-app.post('/subjects', (req, res) => {
-  let errors = []
-
-  if (!req.body.code) {
-    errors.push({ text: 'Please add a code' })
-  }
-  if (!req.body.type) {
-    errors.push({ text: 'Please add type' })
-  }
-  if (!req.body.name) {
-    errors.push({ text: 'Please add name' })
-  }
-
-  if (errors.length > 0) {
-    res.render('subjects/add', {
-      errors: errors,
-      code: req.body.code,
-      type: req.body.type,
-      name: req.body.name,
-      description: req.body.description,
-      imageRootFolderURL: req.body.imageRootFolderURL,
-      notebookRootFolderURL: req.body.notebookRootFolderURL,
-      image: req.body.image
-    })
-  } else {
-    const newUser = {
-      code: req.body.code,
-      type: req.body.type,
-      name: req.body.name,
-      description: req.body.description,
-      imageRootFolderURL: req.body.imageRootFolderURL,
-      notebookRootFolderURL: req.body.notebookRootFolderURL,
-      image: req.body.image
-      //user: req.user.id for later
-    }
-    new Subject(newUser)
-      .save()
-      .then(subject => {
-        req.flash('success_msg', 'Subject added');
-        res.redirect('/subjects')
-      })
-  }
-})
-
-//-------------- UPLOAD AND GET CSV TEMPLATE ROUTES
-const template = require('./template.js')
-app.get('/template', template.get)
-
-const upload = require('./upload.js')
-app.post('/', upload.post)
-
 //About route
 app.get('/about', (req, res) => {
   Subject.find({})
@@ -384,10 +83,6 @@ app.get('/about', (req, res) => {
     })
 })
 
-app.get('/upload', function (req, res) {
-  res.sendFile(__dirname + '/upload.html')
-});
-
 // HOME page
 app.get('/home', (req, res) => {
   res.render('home', {
@@ -395,14 +90,26 @@ app.get('/home', (req, res) => {
   })
 })
 
-function getByKey(results, key) {
-  var object
-  for (var i = 0; i < results.length; i++) {
-    if (results[i].code === key) {
-      object = results[i]
-    }
-  }
-  return object
-}
+//-------------- UPLOAD AND GET CSV TEMPLATE ROUTES
+app.use(fileUpload())
 
+const template = require('./template.js')
+app.get('/template', template.get)
 
+const upload = require('./upload.js')
+app.post('/', upload.post)
+
+app.get('/upload', function (req, res) {
+  res.sendFile(__dirname + '/upload.html')
+});
+
+//Use routes
+app.use('/lessons', lessons)
+app.use('/subjects', subjects)
+app.use('/users', users)
+
+const port = 5000
+
+server.listen(port, () => {
+  console.log(`Server started on port ${port}`)
+})
