@@ -9,6 +9,7 @@ const methodOverride = require('method-override')
 const validate = require("validate.js")
 const flash = require('connect-flash')
 const session = require('express-session')
+const path = require('path')
 
 const app = express()
 const server = require('http').Server(app)
@@ -19,7 +20,9 @@ const subjects = require('./routes/subjects')
 const users = require('./routes/users')
 
 //proxy to serve css, img and js folders in views
-app.use('/public', express.static('views'))
+//app.use('/public', express.static('views'))
+//Static folder
+app.use(express.static(path.join(__dirname, 'public')))
 
 //Map global promise - get rid of warning
 mongoose.Promise = global.Promise;
