@@ -20,7 +20,7 @@ const subjects = require('./routes/subjects')
 const users = require('./routes/users')
 
 //proxy to serve css, img and js folders in views
-//app.use('/public', express.static('views'))
+app.use('/public', express.static('views'))
 //Static folder
 app.use(express.static(path.join(__dirname, 'public')))
 
