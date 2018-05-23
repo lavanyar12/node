@@ -50,8 +50,6 @@ router.delete('/:id', (req, res) => {
       req.flash('success_msg', 'Lesson deleted');
       res.redirect('/lessons')
     })
-  // console.log(req.params.id)
-  // res.redirect('/lessons')
 })
 
 //---------- Process EDIT Lessons form (PUT)
@@ -65,18 +63,18 @@ router.put('/:id', (req, res) => {
       console.log(lesson)
       //new values
       lesson.subject = req.body.subject,
-        lesson.semester = req.body.semester,
-        lesson.lessonId = req.body.lessonId,
-        lesson.title = req.body.title,
-        lesson.description = req.body.description,
-        lesson.videoTitle = req.body.videoTitle,
-        lesson.videoLink = req.body.videoLink,
-        lesson.careerTitle = req.body.careerTitle,
-        lesson.careerLink = req.body.careerLink,
-        lesson.movieTitle = req.body.movieTitle,
-        lesson.movieLink = req.body.movieLink,
-        lesson.documentLink = req.body.documentLink,
-        lesson.image = req.body.image
+      lesson.semester = req.body.semester,
+      lesson.lessonId = req.body.lessonId,
+      lesson.title = req.body.title,
+      lesson.description = req.body.description,
+      lesson.videoTitle = req.body.videoTitle,
+      lesson.videoLink = req.body.videoLink,
+      lesson.careerTitle = req.body.careerTitle,
+      lesson.careerLink = req.body.careerLink,
+      lesson.movieTitle = req.body.movieTitle,
+      lesson.movieLink = req.body.movieLink,
+      lesson.documentLink = req.body.documentLink,
+      lesson.image = req.body.image
 
       lesson.save()
         .then(lesson => {

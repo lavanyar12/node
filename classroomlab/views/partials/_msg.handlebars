@@ -1,7 +1,15 @@
 {{#if success_msg}}
-  <div class="alert alert-success mt-4">{{success_msg}}</div>
-{{/if}}
-
-{{#if error_msg}}
-  <div class="alert alert-danger mt-4">{{error_msg}}</div>
+<div class="alert alert-success mt-4 alert-dismissible fade show" role="alert">
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{success_msg}}
+</div>
+{{/if}} {{#if error_msg}}
+<div class="alert alert-danger mt-4 alert-dismissible fade show" role="alert"></div>>
+  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  {{error_msg}}
+</div>
 {{/if}}

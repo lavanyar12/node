@@ -45,10 +45,7 @@ router.delete('/:id', (req, res) => {
       req.flash('success_msg', 'Subject deleted');
       res.redirect('/subjects')
     })
-  // console.log(req.params.id)
-  // req.flash('success_msg', 'Subject deleted');
-  // res.redirect('/subjects')
-})
+ })
 
 //---------- Process EDIT Subject form (PUT)
 router.put('/:id', (req, res) => {
