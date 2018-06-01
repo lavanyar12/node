@@ -108,6 +108,12 @@ app.get('/upload', function (req, res) {
   res.sendFile(__dirname + '/upload.html')
 });
 
+app.get('/pay', function (req, res) {
+  res.render('payments/pay', {
+     layout: 'main'
+  })
+});
+
 //Use routes
 app.use('/lessons', lessons)
 app.use('/subjects', subjects)
