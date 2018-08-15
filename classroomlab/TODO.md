@@ -9,4 +9,8 @@ fix routers to work only with login
 create an audit log
 roles??
 
+prepare app for deployment
+deploy
+add CI/CD pipeline
+
 
