@@ -17,7 +17,7 @@ router.get('/register', (req,res) => {
 router.post('/register', (req, res) => {
   let errors = [];
 
-  console.log(req.body)
+  //console.log(req.body)
   if(req.body.password != req.body.password2){
     errors.push({text:'Passwords do not match'});
   }
@@ -48,6 +48,7 @@ router.post('/register', (req, res) => {
             password: req.body.password
           });
           
+          //now use becrypt to hash and save the password
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
               if(err) throw err;

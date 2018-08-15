@@ -4,7 +4,7 @@ Express
 premaseem.wordpress.com
 
 MongoDB - deployment to MLAB (free)
- - use both local and remote version of MongoDB
+ -use both local and remote version of MongoDB
  -noSQL database
  -no tables, schema less
  -uses collections
@@ -16,6 +16,7 @@ MongoDB - deployment to MLAB (free)
 
 mongo commands
 2 terminal windows - make sure PATH is set in bashrc
+. ~/.bashrc
 $mongod --dbpath /et/software/mongodb/data/db
 
 $mongo

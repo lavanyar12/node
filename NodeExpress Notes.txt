@@ -75,4 +75,10 @@ add modules to be able to flash messages following
 -express-messages
 -connect-flash
 
+Install express router to break down routers into separate files instead of having it all in app.js
+
+Install becryptjs for password encryption - generate salt and hash
+
+Install passport for login authentication
+
 
