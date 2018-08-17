@@ -10,6 +10,7 @@ const validate = require("validate.js")
 const flash = require('connect-flash')
 const session = require('express-session')
 const path = require('path')
+const passport = require('passport')
 
 const app = express()
 const server = require('http').Server(app)
@@ -18,6 +19,9 @@ const server = require('http').Server(app)
 const lessons = require('./routes/lessons')
 const subjects = require('./routes/subjects')
 const users = require('./routes/users')
+
+//Passport Config - load local strategy
+require('./config/passport')(passport)
 
 //proxy to serve css, img and js folders in views
 app.use('/public', express.static('views'))
@@ -62,6 +66,10 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
+
+// Passport middleware
+app.use(passport.initialize())
+app.use(passport.session())
 
 //for flash messaging
 app.use(flash());

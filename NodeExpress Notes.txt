@@ -79,6 +79,7 @@ Install express router to break down routers into separate files instead of havi
 
 Install becryptjs for password encryption - generate salt and hash
 
-Install passport for login authentication
+Install passport for login authentication and hooking up a local strategy
+npm install --save passport passport-local
 
 
