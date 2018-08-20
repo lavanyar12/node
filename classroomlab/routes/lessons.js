@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const {ensureAuthenticated} = require('../helpers/auth')
+const {ensureAuthenticated, adminUser} = require('../helpers/auth')
 module.exports = router
 
 var Lesson = require('../models/lesson');

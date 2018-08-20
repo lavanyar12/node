@@ -70,7 +70,8 @@ router.post('/register', (req, res) => {
           const newUser = new User({
             name: req.body.name,
             email: req.body.email,
-            password: req.body.password
+            password: req.body.password,
+            accountType: 'ADMIN'           
           });
           
           //now use becrypt to hash and save the password
@@ -104,6 +105,7 @@ router.get('/logout', (req,res) => {
 //Logout student user
 router.get('/studentlogout', (req,res) => {
   req.logout();
+  req.flash('success_msg', 'Thank you for visiting ! You are now logged out')
   res.redirect('/home')
 })
 
