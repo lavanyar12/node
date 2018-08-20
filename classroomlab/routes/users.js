@@ -5,6 +5,13 @@ const passport = require('passport');
 
 var User = require('../models/user');
 
+// Student login page
+router.get('/studentlogin', (req, res) => {
+  res.render('users/studentlogin', {
+    layout: 'main'
+  })
+})
+
 router.get('/login', (req,res) => {
   res.render('users/login')
 })
@@ -18,6 +25,15 @@ router.post('/login', (req, res, next) => {
   passport.authenticate('local', { //local strategy
     successRedirect:'/lessons',
     failureRedirect: '/users/login',
+    failureFlash: true
+  })(req, res, next);
+});
+
+// Student Login Form POST
+router.post('/studentlogin', (req, res, next) => {
+  passport.authenticate('local', { //local strategy
+    successRedirect:'/home',
+    failureRedirect: '/users/studentlogin',
     failureFlash: true
   })(req, res, next);
 });
@@ -83,6 +99,12 @@ router.get('/logout', (req,res) => {
   req.logout();
   req.flash('success_msg', 'You are logged out')
   res.redirect('/users/login')
+})
+
+//Logout student user
+router.get('/studentlogout', (req,res) => {
+  req.logout();
+  res.redirect('/home')
 })
 
 module.exports = router;
