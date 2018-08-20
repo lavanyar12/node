@@ -10,29 +10,28 @@
         <li class="nav-item">
           <a class="nav-link" href="/about">Syllabus</a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/pay">Payments</a>
-        </li>
       </ul>
       <ul class="navbar-nav ml-auto">
-        <li class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdownMenuLink">Marine Biology</a>
-          <div class="dropdown-menu w-25">
-            <a href="/lessons/view/MB/1" class="dropdown-item">Semester 1</a>
-            <a href="/lessons/view/MB/2" class="dropdown-item">Semester 2</a>
-          </div>
-        </li>
-        <li class="nav-item dropdown">
-          <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdownMenuLink">Geology</a>
-          <div class="dropdown-menu w-25">
-            <a href="/lessons/view/GEO/1" class="dropdown-item">Semester 1</a>
-            <a href="/lessons/view/GEO/2" class="dropdown-item">Semester 2</a>
-          </div>
-        </li>
-        <li class="nav-item">
-          <a href="/login" class="nav-link">Login</a>
-        </li>
-
+        {{#if user}}
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdownMenuLink">Marine Biology</a>
+            <div class="dropdown-menu w-25">
+              <a href="/lessons/view/MB/1" class="dropdown-item">Semester 1</a>
+              <a href="/lessons/view/MB/2" class="dropdown-item">Semester 2</a>
+            </div>
+          </li>
+          <li class="nav-item dropdown">
+            <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" id="navbarDropdownMenuLink">Geology</a>
+            <div class="dropdown-menu w-25">
+              <a href="/lessons/view/GEO/1" class="dropdown-item">Semester 1</a>
+              <a href="/lessons/view/GEO/2" class="dropdown-item">Semester 2</a>
+            </div>
+          </li>
+        {{else}}
+          <li class="nav-item">
+            <a href="/users/login" class="nav-link">Login</a>
+          </li>
+        {{/if}}
       </ul>
     </div>
   </div>

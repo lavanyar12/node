@@ -1,5 +1,6 @@
 const express = require('express')
 const router = express.Router()
+const {ensureAuthenticated} = require('../helpers/auth')
 
 module.exports = router
 
@@ -8,7 +9,7 @@ var Subject = require('../models/subject');
 // BEGIN
 //-------------------SUBJECT ROUTES ------------------------//
 // GET All Subjects route
-router.get('/', (req, res) => {
+router.get('/', ensureAuthenticated, (req, res) => {
 
   Subject.find({})
     .sort({ name: 'asc' })
@@ -20,12 +21,12 @@ router.get('/', (req, res) => {
 })
 
 // --------- ADD Subject form
-router.get('/add', (req, res) => {
+router.get('/add', ensureAuthenticated, (req, res) => {
   res.render('subjects/add')
 })
 
 // --------- GET Subject by id for EDIT form
-router.get('/edit/:id', (req, res) => {
+router.get('/edit/:id', ensureAuthenticated, (req, res) => {
   Subject.findOne({
     _id: req.params.id
   })
@@ -37,7 +38,7 @@ router.get('/edit/:id', (req, res) => {
 })
 
 // --------- DELETE Subject
-router.delete('/:id', (req, res) => {
+router.delete('/:id', ensureAuthenticated, (req, res) => {
   Subject.deleteOne({
     _id: req.params.id
   })
@@ -48,7 +49,7 @@ router.delete('/:id', (req, res) => {
  })
 
 //---------- Process EDIT Subject form (PUT)
-router.put('/:id', (req, res) => {
+router.put('/:id', ensureAuthenticated, (req, res) => {
   Subject.findOne({
     _id: req.params.id
   })
@@ -73,7 +74,7 @@ router.put('/:id', (req, res) => {
 })
 
 //---------- Process ADD form (POST)
-router.post('/', (req, res) => {
+router.post('/', ensureAuthenticated, (req, res) => {
   let errors = []
 
   if (!req.body.code) {

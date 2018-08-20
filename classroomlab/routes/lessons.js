@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-
+const {ensureAuthenticated} = require('../helpers/auth')
 module.exports = router
 
 var Lesson = require('../models/lesson');
@@ -9,7 +9,7 @@ var Subject = require('../models/subject');
 //-------------------------LESSONS ------------------------//
 
 // GET All lessons route
-router.get('/', (req, res) => {
+router.get('/', ensureAuthenticated, (req, res) => {
   Lesson.find({})
     .sort({ subject: 'asc' })
     .sort({ semester: 'asc' })
@@ -24,12 +24,12 @@ router.get('/', (req, res) => {
 })
 
 // --------- ADD Lessons form
-router.get('/add', (req, res) => {
+router.get('/add', ensureAuthenticated, (req, res) => {
   res.render('lessons/add')
 })
 
 // --------- GET Lesson by id for EDIT form
-router.get('/edit/:id', (req, res) => {
+router.get('/edit/:id', ensureAuthenticated, (req, res) => {
   
   Lesson.findOne({
     _id: req.params.id
@@ -42,7 +42,7 @@ router.get('/edit/:id', (req, res) => {
 })
 
 // --------- DELETE Lesson
-router.delete('/:id', (req, res) => {
+router.delete('/:id', ensureAuthenticated, (req, res) => {
   Lesson.deleteOne({
     _id: req.params.id
   })
@@ -53,7 +53,7 @@ router.delete('/:id', (req, res) => {
 })
 
 //---------- Process EDIT Lessons form (PUT)
-router.put('/:id', (req, res) => {
+router.put('/:id', ensureAuthenticated, (req, res) => {
   console.log(req.body)
   Lesson.findOne({
     _id: req.params.id
@@ -86,7 +86,7 @@ router.put('/:id', (req, res) => {
 })
 
 // GET Lessons by subject and semester # - VIEW only
-router.get('/view/:subject/:semester', (req, res) => {
+router.get('/view/:subject/:semester', ensureAuthenticated, (req, res) => {
   Subject.find({}).then((results) => {
     var subjectObj = getByKey(results, req.params.subject)
     Lesson.find({
@@ -109,7 +109,7 @@ router.get('/view/:subject/:semester', (req, res) => {
 
 
 // GET Lessons by subject and semester # - VIEW / EDIT
-router.get('/:subject/:semester', (req, res) => {
+router.get('/:subject/:semester', ensureAuthenticated, (req, res) => {
   Subject.find({}).then((results) => {
     var subjectObj = getByKey(results, req.params.subject)
     Lesson.find({
@@ -130,7 +130,7 @@ router.get('/:subject/:semester', (req, res) => {
 })
 
 //---------- Process ADD form (POST)
-router.post('/', (req, res) => {
+router.post('/', ensureAuthenticated, (req, res) => {
   let errors = []
   if (errors.length > 0) {
     res.render('lessons/add', {
