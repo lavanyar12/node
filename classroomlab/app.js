@@ -32,7 +32,7 @@ app.use(express.static(path.join(__dirname, 'public')))
 mongoose.Promise = global.Promise;
 
 //connect to mongoose remote DB on mlab or local DB
-mongoose.connect('mongodb://localhost/csvimport', {
+mongoose.connect('mongodb://localhost/classroom', {
   //useMongoClient: true - not needed in newer Mongo
 })
   .then(() => console.log('Connection to MongoDB successful'))
@@ -104,25 +104,6 @@ app.get('/home', (req, res) => {
     layout: 'main'
   })
 })
-
-//-------------- UPLOAD AND GET CSV TEMPLATE ROUTES
-app.use(fileUpload())
-
-const template = require('./template.js')
-app.get('/template', template.get)
-
-const upload = require('./upload.js')
-app.post('/', upload.post)
-
-app.get('/upload', function (req, res) {
-  res.sendFile(__dirname + '/upload.html')
-});
-
-app.get('/pay', function (req, res) {
-  res.render('payments/pay', {
-     layout: 'main'
-  })
-});
 
 //Use routes
 app.use('/lessons', lessons)
