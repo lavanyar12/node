@@ -20,7 +20,9 @@ mongo commands
 $mongod --dbpath /et/software/mongodb/data/db
 
 $mongo
+
 >use admin
+
 >db.shutdownServer()
 
 > show dbs
@@ -37,8 +39,11 @@ switched to db vidjot-dev
 > show collections
 ideas
 
+
 > db.ideas.find()
 { "_id" : ObjectId("5ae4d89b1710a2089baadf51"), "title" : "1212", "details" : "121212", "date" : ISODate("2018-04-28T20:24:59.067Z"), "__v" : 0 }
+
+
 > db.ideas.drop()
 
 

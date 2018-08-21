@@ -2,7 +2,7 @@ Node
 Express
 
 MongoDB - deployment to MLAB (free)
- - use both local and remote version of MongoDB
+ -use both local and remote version of MongoDB
  -noSQL database
  -no tables, schema less
  -uses collections

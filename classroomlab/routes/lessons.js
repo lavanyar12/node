@@ -9,7 +9,7 @@ var Subject = require('../models/subject');
 //-------------------------LESSONS ------------------------//
 
 // GET All lessons route
-router.get('/', ensureAuthenticated, (req, res) => {
+router.get('/', ensureAuthenticated, adminUser, (req, res) => {
   Lesson.find({})
     .sort({ subject: 'asc' })
     .sort({ semester: 'asc' })
@@ -24,12 +24,12 @@ router.get('/', ensureAuthenticated, (req, res) => {
 })
 
 // --------- ADD Lessons form
-router.get('/add', ensureAuthenticated, (req, res) => {
+router.get('/add', ensureAuthenticated, adminUser, (req, res) => {
   res.render('lessons/add')
 })
 
 // --------- GET Lesson by id for EDIT form
-router.get('/edit/:id', ensureAuthenticated, (req, res) => {
+router.get('/edit/:id', ensureAuthenticated, adminUser, (req, res) => {
   
   Lesson.findOne({
     _id: req.params.id
@@ -42,7 +42,7 @@ router.get('/edit/:id', ensureAuthenticated, (req, res) => {
 })
 
 // --------- DELETE Lesson
-router.delete('/:id', ensureAuthenticated, (req, res) => {
+router.delete('/:id', ensureAuthenticated, adminUser, (req, res) => {
   Lesson.deleteOne({
     _id: req.params.id
   })
@@ -53,14 +53,14 @@ router.delete('/:id', ensureAuthenticated, (req, res) => {
 })
 
 //---------- Process EDIT Lessons form (PUT)
-router.put('/:id', ensureAuthenticated, (req, res) => {
-  console.log(req.body)
+router.put('/:id', ensureAuthenticated, adminUser, (req, res) => {
+  //console.log(req.body)
   Lesson.findOne({
     _id: req.params.id
   })
     .then(lesson => {
 
-      console.log(lesson)
+      //console.log(lesson)
       //new values
       lesson.subject = req.body.subject,
       lesson.semester = req.body.semester,
@@ -130,7 +130,7 @@ router.get('/:subject/:semester', ensureAuthenticated, (req, res) => {
 })
 
 //---------- Process ADD form (POST)
-router.post('/', ensureAuthenticated, (req, res) => {
+router.post('/', ensureAuthenticated, adminUser, (req, res) => {
   let errors = []
   if (errors.length > 0) {
     res.render('lessons/add', {

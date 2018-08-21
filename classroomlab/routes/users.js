@@ -33,7 +33,7 @@ router.post('/login', (req, res, next) => {
 router.post('/studentlogin', (req, res, next) => {
   passport.authenticate('local', { //local strategy
     successRedirect:'/home',
-    failureRedirect: '/users/studentlogin',
+    failureRedirect: '/home',
     failureFlash: true
   })(req, res, next);
 });
@@ -61,17 +61,18 @@ router.post('/register', (req, res) => {
     })
 
    } else {
-    User.findOne({email: req.body.email})
+    User.findOne({username: req.body.username})
       .then(user => {
         if(user){
-          req.flash('error_msg', 'Email already registered');
+          req.flash('error_msg', 'Username already registered');
           res.redirect('/users/register');
         } else {
           const newUser = new User({
             name: req.body.name,
             email: req.body.email,
             password: req.body.password,
-            accountType: 'ADMIN'           
+            accountType: 'STUDENT',
+            username: req.body.username           
           });
           
           //now use becrypt to hash and save the password
