@@ -19,6 +19,7 @@ const server = require('http').Server(app)
 const lessons = require('./routes/lessons')
 const subjects = require('./routes/subjects')
 const users = require('./routes/users')
+const db = require('./config/database')
 
 //Passport Config - load local strategy
 require('./config/passport')(passport)
@@ -31,8 +32,9 @@ app.use(express.static(path.join(__dirname, 'public')))
 //Map global promise - get rid of warning
 mongoose.Promise = global.Promise;
 
-//connect to mongoose remote DB on mlab or local DB
-mongoose.connect('mongodb://localhost/classroom', {
+//connect to mongoose remote DB on mlab or 
+
+mongoose.connect(db.mongoURI, {
   //useMongoClient: true - not needed in newer Mongo
 })
   .then(() => console.log('Connection to MongoDB successful'))
@@ -110,7 +112,7 @@ app.use('/lessons', lessons)
 app.use('/subjects', subjects)
 app.use('/users', users)
 
-const port = 5000
+const port = process.env.PORT || 5000
 
 server.listen(port, () => {
   console.log(`Server started on port ${port}`)
